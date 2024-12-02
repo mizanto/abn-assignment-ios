@@ -444,6 +444,13 @@ class PlacesViewController: ViewController, UISearchBarDelegate, ArticlePopoverV
         return coordinates.wmf_boundingRegion(with: 0.25 * initialRegion.width)
     }
     
+    @objc(navigateToCoordinatesWithLatitude:longitude:)
+    public func navigateToCoordinates(latitude: Double, longitude: Double) {
+        locationManager.stopMonitoringLocation()
+        
+        zoomAndPanMapView(toLocation: CLLocation(latitude: latitude, longitude: longitude))
+    }
+    
     // MARK: - Searching
     
     var currentSearch: PlaceSearch? {
@@ -1941,6 +1948,7 @@ class PlacesViewController: ViewController, UISearchBarDelegate, ArticlePopoverV
     }
     
     @objc public func showArticleURL(_ articleURL: URL) {
+        locationManager.startMonitoringLocation()
         guard let article = dataStore.fetchArticle(with: articleURL), let title = articleURL.wmf_title,
             view != nil else { // force view instantiation
             return
@@ -2145,6 +2153,7 @@ class PlacesViewController: ViewController, UISearchBarDelegate, ArticlePopoverV
             promptForLocationAccess()
             return
         }
+        locationManager.startMonitoringLocation()
         zoomAndPanMapView(toLocation: userLocation)
     }
     
