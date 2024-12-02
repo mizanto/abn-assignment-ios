@@ -8,6 +8,9 @@
 import Foundation
 import Combine
 import UIKit
+import OSLog
+
+fileprivate let logger = Logger(subsystem: "com.sergeibendak.places", category: "LocationsViewModel")
 
 @MainActor
 class LocationsViewModel: ObservableObject {
@@ -20,13 +23,16 @@ class LocationsViewModel: ObservableObject {
     }
 
     func loadLocations() {
+        logger.debug("Loading locations...")
         Task {
             state = .loading
             do {
                 let fetchedLocations = try await locationService.fetchLocations()
+                logger.debug("Locations loaded: \(fetchedLocations)")
                 state = .success(fetchedLocations.map(DisplayLocation.init))
             } catch {
                 let message = processError(error: error)
+                logger.error("Error loading locations: \(message)")
                 state = .error(message)
             }
         }
@@ -34,10 +40,11 @@ class LocationsViewModel: ObservableObject {
 
     func openInWikipedia(location: DisplayLocation) {
         if let url = url(for: location), UIApplication.shared.canOpenURL(url) {
+            logger.debug("Opening Wikipedia app for: \(location)")
             UIApplication.shared.open(url)
         } else {
-            // TODO: replace with logger
-            print("Wikipedia app is not installed or the URL is invalid.")
+            // TODO: show thomething to the user
+            logger.error("Error opening Wikipedia app for \(location)")
         }
     }
     
