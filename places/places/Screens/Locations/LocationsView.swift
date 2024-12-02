@@ -26,11 +26,9 @@ struct LocationsView: View {
                     }
                     .listStyle(PlainListStyle())
                 case .error(let message):
-                    // TODO: add ErrorView
-                    Text(message)
-                        .foregroundColor(.red)
-                        .multilineTextAlignment(.center)
-                        .padding()
+                    ErrorView(message: message) {
+                        viewModel.retryLoadingLocations()
+                    }
                 }
             }
             .navigationTitle("Places")

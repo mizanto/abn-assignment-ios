@@ -37,6 +37,11 @@ class LocationsViewModel: ObservableObject {
             }
         }
     }
+    
+    func retryLoadingLocations() {
+        logger.debug("Retrying loading locations...")
+        loadLocations()
+    }
 
     func openInWikipedia(location: DisplayLocation) {
         if let url = url(for: location), UIApplication.shared.canOpenURL(url) {
