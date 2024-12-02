@@ -20,10 +20,11 @@ struct LocationsView: View {
                     ProgressView("Loading...")
                 case .success(let locations):
                     List(locations) { location in
-                        Button(location.name) {
+                        LocationRow(location: location) {
                             viewModel.openInWikipedia(location: location)
                         }
                     }
+                    .listStyle(PlainListStyle())
                 case .error(let message):
                     // TODO: add ErrorView
                     Text(message)
