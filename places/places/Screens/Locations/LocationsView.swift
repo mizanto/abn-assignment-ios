@@ -16,8 +16,7 @@ struct LocationsView: View {
             Group {
                 switch viewModel.state {
                 case .loading:
-                    // TODO: add LoadingView
-                    ProgressView("Loading...")
+                    LoadingView(message: "Loading locations, please wait...")
                 case .success(let locations):
                     List(locations) { location in
                         LocationRow(location: location) {

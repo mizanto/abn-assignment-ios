@@ -28,8 +28,9 @@ class LocationsViewModel: ObservableObject {
             state = .loading
             do {
                 let fetchedLocations = try await locationService.fetchLocations()
-                logger.debug("Locations loaded: \(fetchedLocations)")
-                state = .success(fetchedLocations.map(DisplayLocation.init))
+                let displayLocations = fetchedLocations.map(DisplayLocation.init)
+                logger.debug("Locations loaded: \(displayLocations.count)")
+                state = .success(displayLocations)
             } catch {
                 let message = processError(error: error)
                 logger.error("Error loading locations: \(message)")
