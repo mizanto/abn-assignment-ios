@@ -29,7 +29,7 @@ class LocationsViewModel: ObservableObject {
             do {
                 let fetchedLocations = try await locationService.fetchLocations()
                 let displayLocations = fetchedLocations.map(DisplayLocation.init)
-                logger.debug("Locations loaded: \(displayLocations.count)")
+                logger.debug("Locations loaded: \(displayLocations)")
                 state = .success(displayLocations)
             } catch {
                 let message = processError(error: error)

@@ -14,7 +14,7 @@ struct DisplayLocation: Identifiable, CustomStringConvertible {
     let longitude: Double
     
     var description: String {
-        "\nDisplayLocation(id: \(id), name: \(name), latitude: \(latitude), longitude: \(longitude))"
+        "\nDisplayLocation(name: \(name), latitude: \(latitude), longitude: \(longitude))"
     }
     
     init(_ networkLocation: NetworkLocation) {
