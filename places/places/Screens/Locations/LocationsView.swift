@@ -60,14 +60,9 @@ struct LocationsView: View {
                             viewModel.locationTapped(location)
                         }
                     }
-                    Section {
-                        HStack {
-                            Image(systemName: "info.circle")
-                            Text("To open a custom location not listed above, tap the 'Custom' button and enter the coordinates.")
-                                .font(.footnote)
-                                .padding(.vertical, 4)
-                        }
-                        .foregroundColor(.secondary)
+                    Section {}
+                    footer: {
+                        InfoFooterView("To open a custom location not listed above, tap the 'Custom' button and enter the coordinates.")
                     }
                     .listRowSeparator(.hidden)
                 }
@@ -88,9 +83,11 @@ struct LocationsView: View {
     }
     
     private func customLocationView() -> some View {
-        CustomLocationView(isPresented: $viewModel.isPresentingCustomLocation) { latitude, longitude in
-            viewModel.locationSelected(latitude: latitude, longitude: longitude)
-        }
+        CustomLocationView(
+            isPresented: $viewModel.isPresentingCustomLocation,
+            validator: viewModel.validateCoordinates,
+            onSubmit: viewModel.locationSelected
+        )
         .presentationDetents([.height(240)])
         .presentationDragIndicator(.visible)
     }

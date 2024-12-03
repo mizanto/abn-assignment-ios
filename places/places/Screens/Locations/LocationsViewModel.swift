@@ -47,6 +47,10 @@ class LocationsViewModel: ObservableObject {
         logger.debug("Location selected: \(latitude), \(longitude)")
         openInWikipedia(latitude: latitude, longitude: longitude)
     }
+    
+    func validateCoordinates(latitude: String?, longitude: String?) -> Bool {
+        Double(latitude ?? "") != nil && Double(longitude ?? "") != nil
+    }
 
     private func loadLocations() {
         logger.debug("Loading locations...")

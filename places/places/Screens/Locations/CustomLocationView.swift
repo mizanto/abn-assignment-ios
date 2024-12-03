@@ -13,7 +13,12 @@ struct CustomLocationView: View {
     @State private var latitude: String = ""
     @State private var longitude: String = ""
     
-    var completion: (Double?, Double?) -> Void
+    var validator: (String?, String?) -> Bool
+    var onSubmit: (Double?, Double?) -> Void
+    
+    private var isValidInput: Bool {
+        validator(latitude, longitude)
+    }
 
     var body: some View {
         Form {
@@ -22,6 +27,9 @@ struct CustomLocationView: View {
                     .keyboardType(.decimalPad)
                 TextField("Longitude", text: $longitude)
                     .keyboardType(.decimalPad)
+            }
+            footer: {
+                InfoFooterView("Enter latitude and longitude in numerical format")
             }
 
             Section {
@@ -33,16 +41,17 @@ struct CustomLocationView: View {
                         .font(.headline)
                         .frame(maxWidth: .infinity)
                         .padding()
-                        .background(.blue)
+                        .background(isValidInput ? .blue : .gray)
                         .foregroundColor(.white)
                         .cornerRadius(8)
                 }
+                .disabled(!isValidInput)
                 .listRowInsets(EdgeInsets())
             }
         }
     }
-
+    
     private func openCustomLocation() {
-        completion(Double(latitude), Double(longitude))
+        onSubmit(Double(latitude), Double(longitude))
     }
 }
