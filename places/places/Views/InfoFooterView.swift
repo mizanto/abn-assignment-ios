@@ -17,9 +17,14 @@ struct InfoFooterView: View {
     var body: some View {
         HStack {
             Image(systemName: "info.circle")
-            Text(text).font(.footnote)
+                .accessibilityLabel(Text(NSLocalizedString("accessibility_label_footer_icon", comment: "")))
+
+            Text(text)
+                .font(.footnote)
+                .accessibilityLabel(Text(text))
         }
         .padding(.vertical, 4)
         .foregroundColor(.secondary)
+        .accessibilityElement(children: .combine)
     }
 }

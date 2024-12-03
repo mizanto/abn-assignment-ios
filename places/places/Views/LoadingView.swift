@@ -10,7 +10,7 @@ import SwiftUI
 struct LoadingView: View {
     let message: String
     
-    init(message: String = "Loading...") {
+    init(message: String = NSLocalizedString("default_loading_message", comment: "")) {
         self.message = message
     }
 
@@ -28,6 +28,8 @@ struct LoadingView: View {
                 .foregroundColor(.primary)
                 .padding(.horizontal, 32)
                 .padding(.vertical, 16)
+                .accessibilityLabel(Text(message))
+                .accessibilityHint(Text(NSLocalizedString("accessibility_loading_hint", comment: "")))
             
             Spacer()
         }

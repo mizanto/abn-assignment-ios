@@ -11,6 +11,215 @@
         }
       }
     },
+    "accessibility_empty_icon_description" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Empty icon indicating no content"
+          }
+        }
+      }
+    },
+    "accessibility_error_icon_description" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error icon indicating an issue"
+          }
+        }
+      }
+    },
+    "accessibility_hint_custom_button" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Press to open location after entering valid latitude and longitude"
+          }
+        }
+      }
+    },
+    "accessibility_hint_custom_latitude" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Input latitude in decimal format"
+          }
+        }
+      }
+    },
+    "accessibility_hint_custom_location_button" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens a sheet to add a custom location with coordinates"
+          }
+        }
+      }
+    },
+    "accessibility_hint_custom_longitude" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Input longitude in decimal format"
+          }
+        }
+      }
+    },
+    "accessibility_hint_location_row" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap to open location in Wikipedia"
+          }
+        }
+      }
+    },
+    "accessibility_hint_placeholder_action" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap to perform an action"
+          }
+        }
+      }
+    },
+    "accessibility_hint_placeholder_message" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Message displayed to the user"
+          }
+        }
+      }
+    },
+    "accessibility_hint_snackbar_error" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indicates an error occurred."
+          }
+        }
+      }
+    },
+    "accessibility_hint_snackbar_message" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Provides additional information."
+          }
+        }
+      }
+    },
+    "accessibility_hint_snackbar_success" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indicates the action was successful."
+          }
+        }
+      }
+    },
+    "accessibility_label_custom_latitude" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Latitude field"
+          }
+        }
+      }
+    },
+    "accessibility_label_custom_location_button" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show custom location"
+          }
+        }
+      }
+    },
+    "accessibility_label_custom_longitude" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Longitude field"
+          }
+        }
+      }
+    },
+    "accessibility_label_footer_icon" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Information icon"
+          }
+        }
+      }
+    },
+    "accessibility_label_location_row" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Location: %@, coordinates: %.2f°, %.2f°"
+          }
+        }
+      }
+    },
+    "accessibility_label_locations_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "View displaying a list of locations"
+          }
+        }
+      }
+    },
+    "accessibility_loading_hint" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indicates loading in progress"
+          }
+        }
+      }
+    },
     "custom_latitude_placeholder" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -40,6 +249,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Longitude"
+          }
+        }
+      }
+    },
+    "default_loading_message" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loading..."
           }
         }
       }
@@ -128,6 +347,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "An unexpected error occurred. Please try again."
+          }
+        }
+      }
+    },
+    "error_wrong_coordinates" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unable to open Wikipedia"
           }
         }
       }

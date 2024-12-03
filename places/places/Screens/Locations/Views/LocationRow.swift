@@ -25,9 +25,22 @@ struct LocationRow: View {
                 Spacer()
                 Image(systemName: "chevron.right")
                     .foregroundStyle(.secondary)
+                    .accessibilityHidden(true)
             }
             .colorMultiply(.black)
             .padding(.vertical, 4)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(
+                String(
+                    format: NSLocalizedString("accessibility_label_location_row", comment: ""),
+                    location.name,
+                    location.latitude,
+                    location.longitude
+                )
+            )
+            .accessibilityHint(
+                NSLocalizedString("accessibility_hint_location_row", comment: "")
+            )
         }
     }
 }

@@ -49,6 +49,8 @@ struct LocationsView<VM: LocationsViewModelProtocol>: View {
                 viewModel.onAppear()
             }
         }
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(NSLocalizedString("accessibility_label_locations_title", comment: ""))
     }
     
     private func locationsList(_ locations: [DisplayLocation]) -> some View {
@@ -87,6 +89,8 @@ struct LocationsView<VM: LocationsViewModelProtocol>: View {
                 Text(NSLocalizedString("custom_location_button_title", comment: ""))
             }
         )
+        .accessibilityLabel(NSLocalizedString("accessibility_label_custom_location_button", comment: ""))
+        .accessibilityHint(NSLocalizedString("accessibility_hint_custom_location_button", comment: ""))
     }
     
     private func customLocationView() -> some View {

@@ -26,11 +26,16 @@ struct CustomLocationView: View {
                 
                 TextField(NSLocalizedString("custom_latitude_placeholder", comment: ""), text: $latitude)
                     .keyboardType(.decimalPad)
+                    .accessibilityLabel(NSLocalizedString("accessibility_label_custom_latitude", comment: ""))
+                    .accessibilityHint(NSLocalizedString("accessibility_hint_custom_latitude", comment: ""))
                 TextField(NSLocalizedString("custom_longitude_placeholder", comment: ""), text: $longitude)
                     .keyboardType(.decimalPad)
+                    .accessibilityLabel(NSLocalizedString("accessibility_label_custom_longitude", comment: ""))
+                    .accessibilityHint(NSLocalizedString("accessibility_hint_custom_longitude", comment: ""))
             }
             footer: {
                 InfoFooterView(NSLocalizedString("footer_custom_location_message", comment: ""))
+                    .accessibilityHint(NSLocalizedString("accessibility_hint_custom_footer", comment: ""))
             }
 
             Section {
@@ -48,6 +53,8 @@ struct CustomLocationView: View {
                 }
                 .disabled(!isValidInput)
                 .listRowInsets(EdgeInsets())
+                .accessibilityLabel(NSLocalizedString("open_custom_location_button_title", comment: ""))
+                .accessibilityHint(NSLocalizedString("accessibility_hint_custom_button", comment: ""))
             }
         }
     }

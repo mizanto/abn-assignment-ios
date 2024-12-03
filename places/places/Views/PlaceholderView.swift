@@ -36,6 +36,15 @@ struct PlaceholderView: View {
         }
     }
     
+    private var accessibilityLabelForIcon: String {
+        switch type {
+        case .error:
+            return NSLocalizedString("accessibility_error_icon_description", comment: "")
+        case .empty:
+            return NSLocalizedString("accessibility_empty_icon_description", comment: "")
+        }
+    }
+    
     var body: some View {
         VStack(spacing: 20) {
             Spacer()
@@ -45,6 +54,7 @@ struct PlaceholderView: View {
                 .scaledToFit()
                 .frame(width: 80, height: 80)
                 .foregroundColor(iconColor)
+                .accessibilityLabel(accessibilityLabelForIcon)
             
             Text(message)
                 .font(.body)
@@ -52,6 +62,7 @@ struct PlaceholderView: View {
                 .foregroundColor(.primary)
                 .padding(.horizontal, 32)
                 .padding(.vertical, 16)
+                .accessibilityHint(NSLocalizedString("accessibility_hint_placeholder_message", comment: ""))
             
             if let actionTitle = actionTitle, let onAction = onAction {
                 Button(action: onAction) {
@@ -64,12 +75,15 @@ struct PlaceholderView: View {
                         .cornerRadius(8)
                         .padding(.horizontal, 64)
                 }
+                .accessibilityLabel(actionTitle)
+                .accessibilityHint(NSLocalizedString("accessibility_hint_placeholder_action", comment: ""))
             }
             
             Spacer()
         }
         .padding()
         .background(Color(UIColor.systemBackground).edgesIgnoringSafeArea(.all))
+        .accessibilityElement(children: .combine)
     }
 }
 
