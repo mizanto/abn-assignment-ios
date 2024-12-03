@@ -19,21 +19,21 @@ struct LocationsView<VM: LocationsViewModelProtocol>: View {
             Group {
                 switch viewModel.state {
                 case .loading:
-                    LoadingView(message: "Loading locations, please wait...")
+                    LoadingView(message: NSLocalizedString("loading_locations_message", comment: ""))
                 case .success(let locations):
                     locationsList(locations)
                 case .error(let message):
                     PlaceholderView(
                         type: .error,
                         message: message,
-                        actionTitle: "Retry",
+                        actionTitle: NSLocalizedString("retry_button_title", comment: ""),
                         onAction: {
                             viewModel.onReload()
                         }
                     )
                 }
             }
-            .navigationTitle("Places")
+            .navigationTitle(NSLocalizedString("navigation_title_places", comment: ""))
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     customLocationButton()
@@ -53,8 +53,8 @@ struct LocationsView<VM: LocationsViewModelProtocol>: View {
             if locations.isEmpty {
                 PlaceholderView(
                     type: .empty,
-                    message: "No locations available. Add a custom location or try reloading.",
-                    actionTitle: "Reload",
+                    message: NSLocalizedString("empty_locations_message", comment: ""),
+                    actionTitle: NSLocalizedString("retry_button_title", comment: ""),
                     onAction: { viewModel.onReload() }
                 )
             } else {
@@ -66,7 +66,7 @@ struct LocationsView<VM: LocationsViewModelProtocol>: View {
                     }
                     Section {}
                     footer: {
-                        InfoFooterView("To open a custom location not listed above, tap the 'Custom' button and enter the coordinates.")
+                        InfoFooterView(NSLocalizedString("footer_locations_message", comment: ""))
                     }
                     .listRowSeparator(.hidden)
                 }
@@ -81,7 +81,7 @@ struct LocationsView<VM: LocationsViewModelProtocol>: View {
                 viewModel.isPresentingCustomLocation = true
             },
             label: {
-                Text("Custom")
+                Text(NSLocalizedString("custom_location_button_title", comment: ""))
             }
         )
     }

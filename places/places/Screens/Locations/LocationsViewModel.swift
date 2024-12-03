@@ -98,22 +98,22 @@ class LocationsViewModel: LocationsViewModelProtocol {
         if let locationError = error as? LocationServiceError {
             switch locationError {
             case .invalidURL:
-                return "Invalid URL. Please contact support."
+                return NSLocalizedString("error_invalid_url", comment: "")
             case .invalidResponse:
-                return "Invalid server response. Please try again later."
+                return NSLocalizedString("error_invalid_response", comment: "")
             case .decodingError:
-                return "Failed to decode locations. Please contact support."
+                return NSLocalizedString("error_decoding", comment: "")
             case .networkError(_):
-                return "Network error. Please check your internet connection."
+                return NSLocalizedString("error_network", comment: "")
             case .clientError:
-                return "Client error. Please contact support."
+                return NSLocalizedString("error_client", comment: "")
             case .serverError:
-                return "Server error. Please contact support."
+                return NSLocalizedString("error_server", comment: "")
             default:
-                return "An unexpected error occurred. Please try again."
+                return NSLocalizedString("error_unexpected", comment: "")
             }
         } else {
-            return "An unexpected error occurred. Please try again."
+            return NSLocalizedString("error_unexpected", comment: "")
         }
     }
 }

@@ -23,13 +23,14 @@ struct CustomLocationView: View {
     var body: some View {
         Form {
             Section {
-                TextField("Latitude", text: $latitude)
+                
+                TextField(NSLocalizedString("custom_latitude_placeholder", comment: ""), text: $latitude)
                     .keyboardType(.decimalPad)
-                TextField("Longitude", text: $longitude)
+                TextField(NSLocalizedString("custom_longitude_placeholder", comment: ""), text: $longitude)
                     .keyboardType(.decimalPad)
             }
             footer: {
-                InfoFooterView("Enter latitude and longitude in numerical format")
+                InfoFooterView(NSLocalizedString("footer_custom_location_message", comment: ""))
             }
 
             Section {
@@ -37,7 +38,7 @@ struct CustomLocationView: View {
                     openCustomLocation()
                     isPresented = false
                 }) {
-                    Text("Open in Wikipedia")
+                    Text(NSLocalizedString("open_custom_location_button_title", comment: ""))
                         .font(.headline)
                         .frame(maxWidth: .infinity)
                         .padding()
