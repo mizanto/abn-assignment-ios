@@ -42,6 +42,9 @@ struct LocationsView<VM: LocationsViewModelProtocol>: View {
             .sheet(isPresented: $viewModel.isPresentingCustomLocation) {
                 customLocationView()
             }
+            .snackbar(isPresented: $viewModel.showErrorSnackbar,
+                      message: viewModel.snackbarErrorMessage,
+                      type: .error)
             .onAppear {
                 viewModel.onAppear()
             }

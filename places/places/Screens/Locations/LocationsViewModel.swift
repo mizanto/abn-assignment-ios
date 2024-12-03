@@ -13,6 +13,8 @@ import UIKit
 protocol LocationsViewModelProtocol: ObservableObject {
     var state: ScreenState { get }
     var isPresentingCustomLocation: Bool { get set }
+    var showErrorSnackbar: Bool { get set }
+    var snackbarErrorMessage: String { get }
     
     func onAppear()
     func onReload()
@@ -25,6 +27,9 @@ protocol LocationsViewModelProtocol: ObservableObject {
 class LocationsViewModel: LocationsViewModelProtocol {
     @Published var state: ScreenState = .loading
     @Published var isPresentingCustomLocation = false
+    @Published var showErrorSnackbar = false
+    
+    var snackbarErrorMessage: String = ""
 
     private let locationService: LocationServiceProtocol
 
@@ -49,7 +54,8 @@ class LocationsViewModel: LocationsViewModelProtocol {
     
     func locationSelected(latitude: Double?, longitude: Double?) {
         guard let latitude, let longitude else {
-            // TODO: show message to the user
+            snackbarErrorMessage = NSLocalizedString("error_wrong_coordinates", comment: "")
+            showErrorSnackbar = true
             logger.debug("Invalid location", category: .locationsViewModel)
             return
         }
@@ -83,7 +89,8 @@ class LocationsViewModel: LocationsViewModelProtocol {
             logger.debug("Opening Wikipedia app for: \(latitude), \(longitude)", category: .locationsViewModel)
             UIApplication.shared.open(url)
         } else {
-            // TODO: show thomething to the user
+            snackbarErrorMessage = NSLocalizedString("error_wrong_coordinates", comment: "")
+            showErrorSnackbar = true
             logger.error("Error opening Wikipedia app for: \(latitude), \(longitude)", category: .locationsViewModel)
         }
     }
@@ -94,7 +101,6 @@ class LocationsViewModel: LocationsViewModelProtocol {
     }
     
     private func processError(error: Error) -> String {
-        // TODO: move strings to localizable.strings
         if let locationError = error as? LocationServiceError {
             switch locationError {
             case .invalidURL:
