@@ -15,14 +15,40 @@ fileprivate let logger = Logger(subsystem: "com.sergeibendak.places", category: 
 @MainActor
 class LocationsViewModel: ObservableObject {
     @Published var state: ScreenState = .loading
+    @Published var isPresentingCustomLocation = false
 
     private let locationService: LocationServiceProtocol
 
     init(locationService: LocationServiceProtocol = LocationService()) {
         self.locationService = locationService
     }
+    
+    func onAppear() {
+        logger.debug("On appear...")
+        loadLocations()
+    }
+    
+    func onReload() {
+        logger.debug("Reloading locations...")
+        loadLocations()
+    }
+    
+    func locationTapped(_ location: DisplayLocation) {
+        logger.debug("Location tapped: \(location)")
+        openInWikipedia(latitude: location.latitude, longitude: location.longitude)
+    }
+    
+    func locationSelected(latitude: Double?, longitude: Double?) {
+        guard let latitude, let longitude else {
+            // TODO: show message to the user
+            logger.debug("Invalid location")
+            return
+        }
+        logger.debug("Location selected: \(latitude), \(longitude)")
+        openInWikipedia(latitude: latitude, longitude: longitude)
+    }
 
-    func loadLocations() {
+    private func loadLocations() {
         logger.debug("Loading locations...")
         Task {
             state = .loading
@@ -39,23 +65,18 @@ class LocationsViewModel: ObservableObject {
         }
     }
     
-    func retryLoadingLocations() {
-        logger.debug("Retrying loading locations...")
-        loadLocations()
-    }
-
-    func openInWikipedia(location: DisplayLocation) {
-        if let url = url(for: location), UIApplication.shared.canOpenURL(url) {
-            logger.debug("Opening Wikipedia app for: \(location)")
+    private func openInWikipedia(latitude: Double, longitude: Double) {
+        if let url = url(latitude: latitude, longitude: longitude), UIApplication.shared.canOpenURL(url) {
+            logger.debug("Opening Wikipedia app for: \(latitude), \(longitude)")
             UIApplication.shared.open(url)
         } else {
             // TODO: show thomething to the user
-            logger.error("Error opening Wikipedia app for \(location)")
+            logger.error("Error opening Wikipedia app for: \(latitude), \(longitude)")
         }
     }
     
-    private func url(for location: DisplayLocation) -> URL? {
-        let urlString = "wikipedia://places?latitude=\(location.latitude)&longitude=\(location.longitude)"
+    private func url(latitude: Double, longitude: Double) -> URL? {
+        let urlString = "wikipedia://places?latitude=\(latitude)&longitude=\(longitude)"
         return URL(string: urlString)
     }
     

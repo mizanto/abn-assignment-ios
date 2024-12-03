@@ -32,6 +32,6 @@ struct LoadingView: View {
             Spacer()
         }
         .padding()
-        .background(Color(UIColor.systemBackground).edgesIgnoringSafeArea(.all))
+        .background(Color(.systemBackground).edgesIgnoringSafeArea(.all))
     }
 }
