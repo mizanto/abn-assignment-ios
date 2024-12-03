@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct PlacesApp: App {
+    let locationService = LocationService()
+    
     var body: some Scene {
         WindowGroup {
-            LocationsView()
+            LocationsBuilder.build(locationService: locationService)
         }
     }
 }

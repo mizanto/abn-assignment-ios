@@ -7,8 +7,12 @@
 
 import SwiftUI
 
-struct LocationsView: View {
-    @StateObject private var viewModel = LocationsViewModel()
+struct LocationsView<VM: LocationsViewModelProtocol>: View {
+    @StateObject private var viewModel: VM
+    
+    init(viewModel: VM) {
+            _viewModel = StateObject(wrappedValue: viewModel)
+        }
 
     var body: some View {
         NavigationView {
@@ -93,6 +97,6 @@ struct LocationsView: View {
     }
 }
 
-#Preview {
-    LocationsView()
-}
+//#Preview {
+//    LocationsView()
+//}

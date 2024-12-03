@@ -13,13 +13,25 @@ import OSLog
 fileprivate let logger = Logger(subsystem: "com.sergeibendak.places", category: "LocationsViewModel")
 
 @MainActor
-class LocationsViewModel: ObservableObject {
+protocol LocationsViewModelProtocol: ObservableObject {
+    var state: ScreenState { get }
+    var isPresentingCustomLocation: Bool { get set }
+    
+    func onAppear()
+    func onReload()
+    func locationTapped(_ location: DisplayLocation)
+    func locationSelected(latitude: Double?, longitude: Double?)
+    func validateCoordinates(latitude: String?, longitude: String?) -> Bool
+}
+
+@MainActor
+class LocationsViewModel: LocationsViewModelProtocol {
     @Published var state: ScreenState = .loading
     @Published var isPresentingCustomLocation = false
 
     private let locationService: LocationServiceProtocol
 
-    init(locationService: LocationServiceProtocol = LocationService()) {
+    init(locationService: LocationServiceProtocol) {
         self.locationService = locationService
     }
     
