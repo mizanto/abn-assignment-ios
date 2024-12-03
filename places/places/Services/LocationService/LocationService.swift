@@ -12,17 +12,28 @@ protocol LocationServiceProtocol {
 }
 
 class LocationService: LocationServiceProtocol {
-    private let baseURL: String = "https://raw.githubusercontent.com/abnamrocoesd/assignment-ios/main/locations.json"
+    private enum Constant {
+        static let baseURL = "https://raw.githubusercontent.com/abnamrocoesd/assignment-ios/main/locations.json"
+    }
+    
+    private let session: URLSession
+    private let baseURL: String
+    
+    init(baseURL: String = Constant.baseURL, session: URLSession = .shared) {
+        self.baseURL = baseURL
+        self.session = session
+    }
     
     func fetchLocations() async throws -> [NetworkLocation] {
         logger.debug("Fetching locations...", category: .locationService)
-        guard let url = URL(string: baseURL) else {
+
+        guard let url = URL(string: baseURL), url.scheme != nil else {
             logger.error("Invalid URL: \(self.baseURL)", category: .locationService)
             throw LocationServiceError.invalidURL
         }
 
         do {
-            let (data, response) = try await URLSession.shared.data(from: url)
+            let (data, response) = try await session.data(from: url)
             
             guard let httpResponse = response as? HTTPURLResponse else {
                 logger.error("Invalid response received from server", category: .locationService)
@@ -46,6 +57,8 @@ class LocationService: LocationServiceProtocol {
         } catch let error as DecodingError {
             logger.error("Decoding error: \(error)", category: .locationService)
             throw LocationServiceError.decodingError(error)
+        } catch let error as LocationServiceError {
+            throw error
         } catch {
             logger.error("Network error: \(error)", category: .locationService)
             throw LocationServiceError.networkError(error)
@@ -57,10 +70,12 @@ class LocationService: LocationServiceProtocol {
             let locations: [NetworkLocation]
         }
 
-        guard let rawData = try? JSONDecoder().decode(LocationsResponse.self, from: data) else {
-            throw LocationServiceError.invalidResponse
+        do {
+            let decodedData = try JSONDecoder().decode(LocationsResponse.self, from: data)
+            return decodedData.locations
+        } catch {
+            throw LocationServiceError.decodingError(error)
         }
-        return rawData.locations
     }
 }
 

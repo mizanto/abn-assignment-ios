@@ -35,3 +35,23 @@ enum LocationServiceError: Error, LocalizedError {
         }
     }
 }
+
+extension LocationServiceError: Equatable {
+    static func == (lhs: LocationServiceError, rhs: LocationServiceError) -> Bool {
+        switch (lhs, rhs) {
+        case (.invalidURL, .invalidURL),
+            (.invalidResponse, .invalidResponse):
+            return true
+        case (.decodingError(let lhsError), .decodingError(let rhsError)):
+            return lhsError.localizedDescription == rhsError.localizedDescription
+        case (.networkError(let lhsError), .networkError(let rhsError)):
+            return lhsError.localizedDescription == rhsError.localizedDescription
+        case (.clientError(let lhsCode), .clientError(let rhsCode)),
+            (.serverError(let lhsCode), .serverError(let rhsCode)),
+            (.unexpectedStatusCode(let lhsCode), .unexpectedStatusCode(let rhsCode)):
+            return lhsCode == rhsCode
+        default:
+            return false
+        }
+    }
+}
