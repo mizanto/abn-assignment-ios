@@ -6,9 +6,6 @@
 //
 
 import Foundation
-import OSLog
-
-fileprivate let logger = Logger(subsystem: "com.sergeibendak.places", category: "LocationService")
 
 protocol LocationServiceProtocol {
     func fetchLocations() async throws -> [NetworkLocation]

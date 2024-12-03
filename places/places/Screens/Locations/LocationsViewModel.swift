@@ -8,9 +8,6 @@
 import Foundation
 import Combine
 import UIKit
-import OSLog
-
-fileprivate let logger = Logger(subsystem: "com.sergeibendak.places", category: "LocationsViewModel")
 
 @MainActor
 protocol LocationsViewModelProtocol: ObservableObject {
