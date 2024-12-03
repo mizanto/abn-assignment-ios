@@ -33,27 +33,27 @@ class LocationsViewModel: LocationsViewModelProtocol {
     }
     
     func onAppear() {
-        logger.debug("On appear...")
+        logger.debug("On appear...", category: .locationsViewModel)
         loadLocations()
     }
     
     func onReload() {
-        logger.debug("Reloading locations...")
+        logger.debug("Reloading locations...", category: .locationsViewModel)
         loadLocations()
     }
     
     func locationTapped(_ location: DisplayLocation) {
-        logger.debug("Location tapped: \(location)")
+        logger.debug("Location tapped: \(location)", category: .locationsViewModel)
         openInWikipedia(latitude: location.latitude, longitude: location.longitude)
     }
     
     func locationSelected(latitude: Double?, longitude: Double?) {
         guard let latitude, let longitude else {
             // TODO: show message to the user
-            logger.debug("Invalid location")
+            logger.debug("Invalid location", category: .locationsViewModel)
             return
         }
-        logger.debug("Location selected: \(latitude), \(longitude)")
+        logger.debug("Location selected: \(latitude), \(longitude)", category: .locationsViewModel)
         openInWikipedia(latitude: latitude, longitude: longitude)
     }
     
@@ -62,17 +62,17 @@ class LocationsViewModel: LocationsViewModelProtocol {
     }
 
     private func loadLocations() {
-        logger.debug("Loading locations...")
+        logger.debug("Loading locations...", category: .locationsViewModel)
         Task {
             state = .loading
             do {
                 let fetchedLocations = try await locationService.fetchLocations()
                 let displayLocations = fetchedLocations.map(DisplayLocation.init)
-                logger.debug("Locations loaded: \(displayLocations)")
+                logger.debug("Locations loaded: \(displayLocations)", category: .locationsViewModel)
                 state = .success(displayLocations)
             } catch {
                 let message = processError(error: error)
-                logger.error("Error loading locations: \(message)")
+                logger.error("Error loading locations: \(message)", category: .locationsViewModel)
                 state = .error(message)
             }
         }
@@ -80,11 +80,11 @@ class LocationsViewModel: LocationsViewModelProtocol {
     
     private func openInWikipedia(latitude: Double, longitude: Double) {
         if let url = url(latitude: latitude, longitude: longitude), UIApplication.shared.canOpenURL(url) {
-            logger.debug("Opening Wikipedia app for: \(latitude), \(longitude)")
+            logger.debug("Opening Wikipedia app for: \(latitude), \(longitude)", category: .locationsViewModel)
             UIApplication.shared.open(url)
         } else {
             // TODO: show thomething to the user
-            logger.error("Error opening Wikipedia app for: \(latitude), \(longitude)")
+            logger.error("Error opening Wikipedia app for: \(latitude), \(longitude)", category: .locationsViewModel)
         }
     }
     
@@ -103,8 +103,14 @@ class LocationsViewModel: LocationsViewModelProtocol {
                 return "Invalid server response. Please try again later."
             case .decodingError:
                 return "Failed to decode locations. Please contact support."
-            case .networkError(let networkError):
-                return "Network error: \(networkError.localizedDescription). Please check your internet connection."
+            case .networkError(_):
+                return "Network error. Please check your internet connection."
+            case .clientError:
+                return "Client error. Please contact support."
+            case .serverError:
+                return "Server error. Please contact support."
+            default:
+                return "An unexpected error occurred. Please try again."
             }
         } else {
             return "An unexpected error occurred. Please try again."
