@@ -32,9 +32,11 @@ class LocationsViewModel: LocationsViewModelProtocol {
     var snackbarErrorMessage: String = ""
 
     private let locationService: LocationServiceProtocol
+    private let urlOpener: URLOpener
 
-    init(locationService: LocationServiceProtocol) {
+    init(locationService: LocationServiceProtocol, urlOpener: URLOpener = DefaultURLOpener()) {
         self.locationService = locationService
+        self.urlOpener = urlOpener
     }
     
     func onAppear() {
@@ -54,8 +56,7 @@ class LocationsViewModel: LocationsViewModelProtocol {
     
     func locationSelected(latitude: Double?, longitude: Double?) {
         guard let latitude, let longitude else {
-            snackbarErrorMessage = NSLocalizedString("error_wrong_coordinates", comment: "")
-            showErrorSnackbar = true
+            presentErrorSnackbar(message: NSLocalizedString("error_wrong_coordinates", comment: ""))
             logger.debug("Invalid location", category: .locationsViewModel)
             return
         }
@@ -85,19 +86,29 @@ class LocationsViewModel: LocationsViewModelProtocol {
     }
     
     private func openInWikipedia(latitude: Double, longitude: Double) {
-        if let url = url(latitude: latitude, longitude: longitude), UIApplication.shared.canOpenURL(url) {
-            logger.debug("Opening Wikipedia app for: \(latitude), \(longitude)", category: .locationsViewModel)
-            UIApplication.shared.open(url)
-        } else {
-            snackbarErrorMessage = NSLocalizedString("error_wrong_coordinates", comment: "")
-            showErrorSnackbar = true
+        guard let url = url(latitude: latitude, longitude: longitude) else {
             logger.error("Error opening Wikipedia app for: \(latitude), \(longitude)", category: .locationsViewModel)
+            presentErrorSnackbar(message: NSLocalizedString("error_wrong_coordinates", comment: ""))
+            return
+        }
+        
+        if urlOpener.canOpenURL(url) {
+            logger.debug("Opening Wikipedia app for: \(latitude), \(longitude)", category: .locationsViewModel)
+            urlOpener.open(url)
+        } else {
+            logger.error("Error opening Wikipedia app for: \(latitude), \(longitude)", category: .locationsViewModel)
+            presentErrorSnackbar(message: NSLocalizedString("error_wrong_coordinates", comment: ""))
         }
     }
     
     private func url(latitude: Double, longitude: Double) -> URL? {
         let urlString = "wikipedia://places?latitude=\(latitude)&longitude=\(longitude)"
         return URL(string: urlString)
+    }
+    
+    private func presentErrorSnackbar(message: String) {
+        snackbarErrorMessage = message
+        showErrorSnackbar = true
     }
     
     private func processError(error: Error) -> String {

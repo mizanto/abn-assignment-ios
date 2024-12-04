@@ -29,7 +29,7 @@ class MockURLProtocol: URLProtocol {
             if let error = error {
                 client?.urlProtocol(self, didFailWithError: error)
             } else {
-                if let response = response as? HTTPURLResponse {
+                if let response {
                     client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
                 } else {
                     let invalidResponse = URLResponse(

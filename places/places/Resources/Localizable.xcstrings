@@ -44,6 +44,16 @@
         }
       }
     },
+    "accessibility_hint_custom_footer" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Footer with instructions for custom location."
+          }
+        }
+      }
+    },
     "accessibility_hint_custom_latitude" : {
       "extractionState" : "manual",
       "localizations" : {
