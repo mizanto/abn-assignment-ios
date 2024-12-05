@@ -15,25 +15,25 @@ struct LocationsView<VM: LocationsViewModelProtocol>: View {
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             Group {
                 switch viewModel.state {
                 case .loading:
-                    LoadingView(message: NSLocalizedString("loading_locations_message", comment: ""))
+                    LoadingView(message: viewModel.loadingMessage)
                 case .success(let locations):
                     locationsList(locations)
                 case .error(let message):
                     PlaceholderView(
                         type: .error,
                         message: message,
-                        actionTitle: NSLocalizedString("retry_button_title", comment: ""),
+                        actionTitle: viewModel.retryButtonTitle,
                         onAction: {
                             viewModel.onReload()
                         }
                     )
                 }
             }
-            .navigationTitle(NSLocalizedString("navigation_title_places", comment: ""))
+            .navigationTitle(viewModel.title)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     customLocationButton()
@@ -58,8 +58,8 @@ struct LocationsView<VM: LocationsViewModelProtocol>: View {
             if locations.isEmpty {
                 PlaceholderView(
                     type: .empty,
-                    message: NSLocalizedString("empty_locations_message", comment: ""),
-                    actionTitle: NSLocalizedString("retry_button_title", comment: ""),
+                    message: viewModel.emptyMessage,
+                    actionTitle: viewModel.retryButtonTitle,
                     onAction: { viewModel.onReload() }
                 )
                 .accessibilityIdentifier("LocationsView_EmptyPlaceholder")
@@ -72,7 +72,7 @@ struct LocationsView<VM: LocationsViewModelProtocol>: View {
                     }
                     Section {}
                     footer: {
-                        InfoFooterView(NSLocalizedString("footer_locations_message", comment: ""))
+                        InfoFooterView(viewModel.footerText)
                     }
                     .listRowSeparator(.hidden)
                 }
@@ -88,7 +88,7 @@ struct LocationsView<VM: LocationsViewModelProtocol>: View {
                 viewModel.isPresentingCustomLocation = true
             },
             label: {
-                Text(NSLocalizedString("custom_location_button_title", comment: ""))
+                Text(viewModel.customLocationButtonTitle)
             }
         )
         .accessibilityLabel(NSLocalizedString("accessibility_label_custom_location_button", comment: ""))

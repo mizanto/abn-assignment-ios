@@ -12,6 +12,7 @@ struct PlacesApp: App {
     let locationService = LocationService()
     let locationsView: LocationsView<LocationsViewModel>
     
+#if DEBUG
     init() {
         if CommandLine.arguments.contains("-mockLoadingState") {
             locationsView = LocationsBuilder.build(mock: .loading)
@@ -25,6 +26,11 @@ struct PlacesApp: App {
             locationsView = LocationsBuilder.build(locationService: locationService)
         }
     }
+#else
+    init() {
+        locationsView = LocationsBuilder.build(locationService: locationService)
+    }
+#endif
     
     var body: some Scene {
         WindowGroup {

@@ -29,7 +29,6 @@ struct LocationRow: View {
                     .foregroundStyle(.secondary)
                     .accessibilityHidden(true)
             }
-            .colorMultiply(.black)
             .padding(.vertical, 4)
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(

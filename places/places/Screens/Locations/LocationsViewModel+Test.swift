@@ -5,6 +5,7 @@
 //  Created by Sergey Bendak on 4.12.2024.
 //
 
+#if DEBUG
 import Foundation
 
 extension LocationsViewModel {
@@ -38,3 +39,4 @@ extension LocationsViewModel {
         return viewModel
     }
 }
+#endif

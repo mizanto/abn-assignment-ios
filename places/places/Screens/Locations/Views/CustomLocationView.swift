@@ -25,12 +25,12 @@ struct CustomLocationView: View {
             Section {
                 
                 TextField(NSLocalizedString("custom_latitude_placeholder", comment: ""), text: $latitude)
-                    .keyboardType(.decimalPad)
+                    .keyboardType(.numbersAndPunctuation)
                     .accessibilityLabel(NSLocalizedString("accessibility_label_custom_latitude", comment: ""))
                     .accessibilityHint(NSLocalizedString("accessibility_hint_custom_latitude", comment: ""))
                     .accessibilityIdentifier("custom_latitude_field")
                 TextField(NSLocalizedString("custom_longitude_placeholder", comment: ""), text: $longitude)
-                    .keyboardType(.decimalPad)
+                    .keyboardType(.numbersAndPunctuation)
                     .accessibilityLabel(NSLocalizedString("accessibility_label_custom_longitude", comment: ""))
                     .accessibilityHint(NSLocalizedString("accessibility_hint_custom_longitude", comment: ""))
                     .accessibilityIdentifier("custom_longitude_field")

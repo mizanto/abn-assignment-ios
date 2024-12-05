@@ -14,6 +14,13 @@ protocol LocationsViewModelProtocol: ObservableObject {
     var state: ScreenState { get }
     var isPresentingCustomLocation: Bool { get set }
     var showErrorSnackbar: Bool { get set }
+    
+    var title: String { get }
+    var loadingMessage: String { get }
+    var emptyMessage: String { get }
+    var retryButtonTitle: String { get }
+    var footerText: String { get }
+    var customLocationButtonTitle: String { get }
     var snackbarErrorMessage: String { get }
     
     func onAppear()
@@ -28,6 +35,13 @@ class LocationsViewModel: LocationsViewModelProtocol {
     @Published var state: ScreenState = .loading
     @Published var isPresentingCustomLocation = false
     @Published var showErrorSnackbar = false
+    
+    let title: String = NSLocalizedString("navigation_title_places", comment: "")
+    let loadingMessage: String = NSLocalizedString("loading_locations_message", comment: "")
+    let emptyMessage: String = NSLocalizedString("empty_locations_message", comment: "")
+    let retryButtonTitle: String = NSLocalizedString("retry_button_title", comment: "")
+    let footerText: String = NSLocalizedString("footer_locations_message", comment: "")
+    let customLocationButtonTitle: String = NSLocalizedString("custom_location_button_title", comment: "")
     
     var snackbarErrorMessage: String = ""
 
@@ -65,7 +79,7 @@ class LocationsViewModel: LocationsViewModelProtocol {
     }
     
     func validateCoordinates(latitude: String?, longitude: String?) -> Bool {
-        Double(latitude ?? "") != nil && Double(longitude ?? "") != nil
+        parseCoordinate(latitude) != nil && parseCoordinate(longitude) != nil
     }
 
     private func loadLocations() {
@@ -85,6 +99,13 @@ class LocationsViewModel: LocationsViewModelProtocol {
         }
     }
     
+    private func parseCoordinate(_ string: String?) -> Double? {
+        guard let string = string else { return nil }
+        let formatter = NumberFormatter()
+        formatter.locale = Locale.current
+        return formatter.number(from: string)?.doubleValue
+    }
+    
     private func openInWikipedia(latitude: Double, longitude: Double) {
         guard let url = url(latitude: latitude, longitude: longitude) else {
             logger.error("Error opening Wikipedia app for: \(latitude), \(longitude)", category: .locationsViewModel)
@@ -102,8 +123,14 @@ class LocationsViewModel: LocationsViewModelProtocol {
     }
     
     private func url(latitude: Double, longitude: Double) -> URL? {
-        let urlString = "wikipedia://places?latitude=\(latitude)&longitude=\(longitude)"
-        return URL(string: urlString)
+        var components = URLComponents()
+        components.scheme = "wikipedia"
+        components.host = "places"
+        components.queryItems = [
+            URLQueryItem(name: "latitude", value: "\(latitude)"),
+            URLQueryItem(name: "longitude", value: "\(longitude)")
+        ]
+        return components.url
     }
     
     private func presentErrorSnackbar(message: String) {

@@ -5,6 +5,7 @@
 //  Created by Sergey Bendak on 4.12.2024.
 //
 
+#if DEBUG
 import Foundation
 
 final class MockLocationService: LocationServiceProtocol {
@@ -18,3 +19,4 @@ final class MockLocationService: LocationServiceProtocol {
         return locations
     }
 }
+#endif

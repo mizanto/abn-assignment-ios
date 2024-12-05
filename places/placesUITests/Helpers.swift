@@ -1,5 +1,5 @@
 //
-//  Utils.swift
+//  Helpers.swift
 //  Places
 //
 //  Created by Sergey Bendak on 5.12.2024.

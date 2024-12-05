@@ -8,17 +8,13 @@
 import SwiftUI
 
 struct LocationsBuilder {
+    
+#if DEBUG
     enum Mock {
         case loading
         case empty
         case success
         case error
-    }
-    
-    @MainActor
-    static func build(locationService: LocationServiceProtocol) -> LocationsView<LocationsViewModel> {
-        let viewModel = LocationsViewModel(locationService: locationService)
-        return LocationsView(viewModel: viewModel)
     }
     
     @MainActor
@@ -35,6 +31,13 @@ struct LocationsBuilder {
         case .error:
             viewModel = LocationsViewModel.mockErrorState()
         }
+        return LocationsView(viewModel: viewModel)
+    }
+#endif
+    
+    @MainActor
+    static func build(locationService: LocationServiceProtocol) -> LocationsView<LocationsViewModel> {
+        let viewModel = LocationsViewModel(locationService: locationService)
         return LocationsView(viewModel: viewModel)
     }
 }
