@@ -446,6 +446,8 @@ class PlacesViewController: ViewController, UISearchBarDelegate, ArticlePopoverV
     
     @objc(navigateToCoordinatesWithLatitude:longitude:)
     public func navigateToCoordinates(latitude: Double, longitude: Double) {
+        guard (-90...90).contains(latitude) && (-180...180).contains(longitude) else { return }
+
         locationManager.stopMonitoringLocation()
         
         zoomAndPanMapView(toLocation: CLLocation(latitude: latitude, longitude: longitude))
