@@ -93,7 +93,7 @@ struct LocationsView<VM: LocationsViewModelProtocol>: View {
         )
         .accessibilityLabel(NSLocalizedString("accessibility_label_custom_location_button", comment: ""))
         .accessibilityHint(NSLocalizedString("accessibility_hint_custom_location_button", comment: ""))
-        .accessibilityIdentifier("LocationsView_customLocationButton")
+        .accessibilityIdentifier("locations_view_custom_location_button")
     }
     
     private func customLocationView() -> some View {

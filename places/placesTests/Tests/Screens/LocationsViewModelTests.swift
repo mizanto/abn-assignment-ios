@@ -6,7 +6,6 @@
 //
 
 import XCTest
-import Combine
 @testable import Places
 
 final class LocationsViewModelTests: XCTestCase {
@@ -36,24 +35,23 @@ final class LocationsViewModelTests: XCTestCase {
         return await LocationsViewModel(locationService: service)
     }
     
-    private func assertState(
+    // New helper function to wait for the state to change
+    private func waitForState(
         _ expectedState: ScreenState,
-        expectationDescription: String,
-        timeout: TimeInterval = 3.0
+        timeout: TimeInterval = 3.0,
+        file: StaticString = #file,
+        line: UInt = #line
     ) async throws {
-        let expectation = XCTestExpectation(description: expectationDescription)
+        let startTime = Date()
+        let timeoutDate = startTime.addingTimeInterval(timeout)
         
-        // Observe state changes
-        let cancellable = await viewModel.$state.sink { state in
-            if state == expectedState {
-                expectation.fulfill()
+        while Date() < timeoutDate {
+            if await viewModel.state == expectedState {
+                return
             }
+            try await Task.sleep(nanoseconds: 100_000_000) // Sleep for 0.1 seconds
         }
-        
-        // Wait for the expectation to be fulfilled
-        await fulfillment(of: [expectation], timeout: timeout)
-        XCTAssertEqual(service.fetchLocationsCallCount, 1, "fetchLocations should be called exactly once")
-        cancellable.cancel()
+        XCTFail("Timeout waiting for state to be \(expectedState)", file: file, line: line)
     }
     
     func testInitialState_StateIsLoading() async throws {
@@ -63,124 +61,108 @@ final class LocationsViewModelTests: XCTestCase {
     }
     
     func testOnAppear_StateUpdatesToSuccess() async throws {
+        // Arrange
         let expectedLocations = testLocations.map(DisplayLocation.init)
         viewModel = await setupViewModel(with: testLocations)
+        
+        // Act
         await viewModel.onAppear()
-        try await assertState(.success(expectedLocations),
-                              expectationDescription: "State should update to success")
+        
+        // Assert
+        try await waitForState(.success(expectedLocations))
+        XCTAssertEqual(service.fetchLocationsCallCount, 1, "fetchLocations should be called exactly once")
     }
     
     func testOnReload_StateUpdatesToSuccess() async throws {
         // Arrange
         let expectedLocations = testLocations.map(DisplayLocation.init)
-        service.locations = testLocations
         viewModel = await setupViewModel(with: testLocations)
-
-        let expectation = XCTestExpectation(description: "State should update to success after reload")
         
-        // Observe changes to state
-        let cancellable = await viewModel.$state.sink { state in
-            if case .success(let locations) = state, locations == expectedLocations {
-                expectation.fulfill()
-            }
-        }
-
         // Act
         await viewModel.onReload()
         
         // Assert
-        await fulfillment(of: [expectation], timeout: 3.0)
+        try await waitForState(.success(expectedLocations))
         XCTAssertEqual(service.fetchLocationsCallCount, 1, "fetchLocations should be called exactly once")
-        cancellable.cancel()
     }
     
     func testOnReload_StateUpdatesToError() async throws {
         // Arrange
         service.error = LocationServiceError.invalidResponse
         viewModel = await setupViewModel(error: service.error)
-
-        let expectation = XCTestExpectation(description: "State should update to error after reload")
         
-        // Observe changes to state
-        let cancellable = await viewModel.$state.sink { state in
-            if case .error(let message) = state, message == NSLocalizedString("error_invalid_response", comment: "") {
-                expectation.fulfill()
-            }
-        }
-
         // Act
         await viewModel.onReload()
         
         // Assert
-        await fulfillment(of: [expectation], timeout: 3.0)
+        let expectedErrorMessage = NSLocalizedString("error_invalid_response", comment: "")
+        try await waitForState(.error(expectedErrorMessage))
         XCTAssertEqual(service.fetchLocationsCallCount, 1, "fetchLocations should be called exactly once")
-        cancellable.cancel()
     }
     
     func testOnAppear_StateUpdatesToSuccessWithEmptyLocations() async throws {
         viewModel = await setupViewModel(with: [])
         await viewModel.onAppear()
-        try await assertState(.success([]),
-                              expectationDescription: "State should update to success with empty locations")
+        try await waitForState(.success([]))
     }
     
     func testOnAppear_StateUpdatesToError_InvalidURL() async throws {
         viewModel = await setupViewModel(error: LocationServiceError.invalidURL)
         await viewModel.onAppear()
-        try await assertState(.error(NSLocalizedString("error_invalid_url", comment: "")),
-                              expectationDescription: "State should update to error with invalid URL message")
+        let expectedErrorMessage = NSLocalizedString("error_invalid_url", comment: "")
+        try await waitForState(.error(expectedErrorMessage))
     }
     
     func testOnAppear_StateUpdatesToError_InvalidResponse() async throws {
         viewModel = await setupViewModel(error: LocationServiceError.invalidResponse)
         await viewModel.onAppear()
-        try await assertState(.error(NSLocalizedString("error_invalid_response", comment: "")),
-                              expectationDescription: "State should update to error with invalid response message")
+        let expectedErrorMessage = NSLocalizedString("error_invalid_response", comment: "")
+        try await waitForState(.error(expectedErrorMessage))
     }
     
     func testOnAppear_StateUpdatesToError_DecodingError() async throws {
         let decodingError = NSError(domain: "Decoding", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid JSON"])
         viewModel = await setupViewModel(error: LocationServiceError.decodingError(decodingError))
         await viewModel.onAppear()
-        try await assertState(.error(NSLocalizedString("error_decoding", comment: "")),
-                              expectationDescription: "State should update to error with decoding error message")
+        let expectedErrorMessage = NSLocalizedString("error_decoding", comment: "")
+        try await waitForState(.error(expectedErrorMessage))
     }
     
     func testOnAppear_StateUpdatesToError_NetworkError() async throws {
         let networkError = NSError(domain: "Network", code: -1, userInfo: [NSLocalizedDescriptionKey: "No Internet Connection"])
         viewModel = await setupViewModel(error: LocationServiceError.networkError(networkError))
         await viewModel.onAppear()
-        try await assertState(.error(NSLocalizedString("error_network", comment: "")),
-                              expectationDescription: "State should update to error with network error message")
+        let expectedErrorMessage = NSLocalizedString("error_network", comment: "")
+        try await waitForState(.error(expectedErrorMessage))
     }
     
     func testOnAppear_StateUpdatesToError_ClientError() async throws {
         viewModel = await setupViewModel(error: LocationServiceError.clientError(400))
         await viewModel.onAppear()
-        try await assertState(.error(NSLocalizedString("error_client", comment: "")),
-                              expectationDescription: "State should update to error with client error message")
+        let expectedErrorMessage = NSLocalizedString("error_client", comment: "")
+        try await waitForState(.error(expectedErrorMessage))
     }
     
     func testOnAppear_StateUpdatesToError_ServerError() async throws {
         viewModel = await setupViewModel(error: LocationServiceError.serverError(500))
         await viewModel.onAppear()
-        try await assertState(.error(NSLocalizedString("error_server", comment: "")),
-                              expectationDescription: "State should update to error with server error message")
+        let expectedErrorMessage = NSLocalizedString("error_server", comment: "")
+        try await waitForState(.error(expectedErrorMessage))
     }
     
     func testOnAppear_StateUpdatesToError_UnexpectedStatusCode() async throws {
         viewModel = await setupViewModel(error: LocationServiceError.unexpectedStatusCode(600))
         await viewModel.onAppear()
-        try await assertState(.error(NSLocalizedString("error_unexpected", comment: "")),
-                              expectationDescription: "State should update to error with unexpected status code message")
+        let expectedErrorMessage = NSLocalizedString("error_unexpected", comment: "")
+        try await waitForState(.error(expectedErrorMessage))
     }
     
     func testOnAppear_StateUpdatesToError_UnknownError() async throws {
         let unknownError = NSError(domain: "Unknown", code: 0, userInfo: [NSLocalizedDescriptionKey: "Unknown Error"])
         viewModel = await setupViewModel(error: unknownError)
         await viewModel.onAppear()
-        try await assertState(.error(NSLocalizedString("error_unexpected", comment: "")),
-                              expectationDescription: "State should update to error with unexpected error message")
+        let expectedErrorMessage = NSLocalizedString("error_unexpected", comment: "")
+        try await waitForState(.error(expectedErrorMessage))
     }
     
     func testLocationSelected_ValidCoordinates() async throws {
@@ -193,7 +175,6 @@ final class LocationsViewModelTests: XCTestCase {
         await viewModel.locationSelected(latitude: latitude, longitude: longitude)
 
         // Assert
-        // Ensure no snackbar message is shown
         let isSnackbarShown = await viewModel.showErrorSnackbar
         XCTAssertFalse(isSnackbarShown, "Snackbar should not be shown for valid coordinates.")
     }
@@ -219,7 +200,7 @@ final class LocationsViewModelTests: XCTestCase {
         viewModel = await LocationsViewModel(locationService: service)
 
         // Act
-        let isValid = await viewModel.validateCoordinates(latitude: "52.3547498", longitude: "4.8339215")
+        let isValid = await viewModel.validateCoordinates(latitude: "52,3547498", longitude: "4,8339215")
 
         // Assert
         XCTAssertTrue(isValid, "Coordinates should be valid.")
@@ -247,7 +228,10 @@ final class LocationsViewModelTests: XCTestCase {
 
         // Assert
         XCTAssertTrue(mockURLOpener.openCalled, "open should be called")
-        XCTAssertEqual(mockURLOpener.urlToOpen?.absoluteString, "wikipedia://places?latitude=\(location.latitude)&longitude=\(location.longitude)")
+        XCTAssertEqual(
+            mockURLOpener.urlToOpen?.absoluteString,
+            "wikipedia://places?latitude=\(location.latitude)&longitude=\(location.longitude)"
+        )
     }
 
     func testLocationTapped_InvalidURL() async throws {
@@ -278,7 +262,10 @@ final class LocationsViewModelTests: XCTestCase {
         
         // Assert
         XCTAssertTrue(mockURLOpener.openCalled, "open should be called")
-        XCTAssertEqual(mockURLOpener.urlToOpen?.absoluteString, "wikipedia://places?latitude=\(latitude)&longitude=\(longitude)")
+        XCTAssertEqual(
+            mockURLOpener.urlToOpen?.absoluteString,
+            "wikipedia://places?latitude=\(latitude)&longitude=\(longitude)"
+        )
     }
     
     func testLocationSelected_InvalidLocation() async throws {

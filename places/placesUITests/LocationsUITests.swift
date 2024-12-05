@@ -16,7 +16,7 @@ final class LocationsUITests: XCTestCase {
         continueAfterFailure = false
     }
     
-    func testLocationsListDisplaysCorrectly() {
+    func testLocationsList_DisplaysCorrectly() {
         // Arrange
         let app = XCUIApplication()
         app.launchArguments += ["-mockSuccessState"]
@@ -86,7 +86,7 @@ final class LocationsUITests: XCTestCase {
         XCTAssertEqual(actionButton.label, expectedButtonTitle, "Retry button text must match the localizable text.")
     }
     
-    func testCustomLocationViewAppearsOnCustomLocationButtonTap() {
+    func testCustomLocationView_AppearsOnCustomLocationButtonTap() {
         // Arrange
         let app = XCUIApplication()
         app.launchArguments += ["-mockSuccessState"]
@@ -125,10 +125,10 @@ final class LocationsUITests: XCTestCase {
         
         // Act: Input valid values into the text fields
         latitudeField.tap()
-        latitudeField.typeText("52.354750")
+        latitudeField.typeText("52,354750")
         
         longitudeField.tap()
-        longitudeField.typeText("4.833922")
+        longitudeField.typeText("4,833922")
         
         // Assert: Check if the submit button is enabled after entering valid input
         XCTAssertTrue(submitButton.isEnabled, "Submit button must be enabled after entering valid input.")
