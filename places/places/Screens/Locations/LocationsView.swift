@@ -99,10 +99,11 @@ struct LocationsView<VM: LocationsViewModelProtocol>: View {
     private func customLocationView() -> some View {
         CustomLocationView(
             isPresented: $viewModel.isPresentingCustomLocation,
-            validator: viewModel.validateCoordinates,
+            latitudeValidator: viewModel.latitudeValidator,
+            longitudeValidator: viewModel.longitudeValidator,
             onSubmit: viewModel.locationSelected
         )
-        .presentationDetents([.height(240)])
+        .presentationDetents([.height(260)])
         .presentationDragIndicator(.visible)
         .accessibilityIdentifier("locations_view_custom_location_view")
     }

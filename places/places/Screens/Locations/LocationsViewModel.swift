@@ -27,7 +27,8 @@ protocol LocationsViewModelProtocol: ObservableObject {
     func onReload()
     func locationTapped(_ location: DisplayLocation)
     func locationSelected(latitude: Double?, longitude: Double?)
-    func validateCoordinates(latitude: String?, longitude: String?) -> Bool
+    func latitudeValidator(_ latitude: String?) -> Bool
+    func longitudeValidator(_ longitude: String?) -> Bool
 }
 
 @MainActor
@@ -78,8 +79,18 @@ class LocationsViewModel: LocationsViewModelProtocol {
         openInWikipedia(latitude: latitude, longitude: longitude)
     }
     
-    func validateCoordinates(latitude: String?, longitude: String?) -> Bool {
-        parseCoordinate(latitude) != nil && parseCoordinate(longitude) != nil
+    func latitudeValidator(_ latitude: String?) -> Bool {
+        guard let lat = parseCoordinate(latitude), (-90...90).contains(lat) else {
+            return false
+        }
+        return true
+    }
+    
+    func longitudeValidator(_ longitude: String?) -> Bool {
+        guard let lon = parseCoordinate(longitude), (-180...180).contains(lon) else {
+            return false
+        }
+        return true
     }
 
     private func loadLocations() {

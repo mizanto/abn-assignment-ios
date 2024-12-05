@@ -306,6 +306,26 @@
         }
       }
     },
+    "error_invalid_latitude" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please enter a valid latitude (-90 to 90)"
+          }
+        }
+      }
+    },
+    "error_invalid_longitude" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please enter a valid longitude (-180 to 180)"
+          }
+        }
+      }
+    },
     "error_invalid_response" : {
       "extractionState" : "manual",
       "localizations" : {

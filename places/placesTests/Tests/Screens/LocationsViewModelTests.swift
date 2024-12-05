@@ -200,10 +200,12 @@ final class LocationsViewModelTests: XCTestCase {
         viewModel = await LocationsViewModel(locationService: service)
 
         // Act
-        let isValid = await viewModel.validateCoordinates(latitude: "52,3547498", longitude: "4,8339215")
+        let latitudeIsValid = await viewModel.latitudeValidator("52,3547498")
+        let longitudeIsValid = await viewModel.longitudeValidator("4,8339215")
 
         // Assert
-        XCTAssertTrue(isValid, "Coordinates should be valid.")
+        XCTAssertTrue(latitudeIsValid, "Latitude should be valid.")
+        XCTAssertTrue(longitudeIsValid, "Longitude should be valid.")
     }
 
     func testValidateCoordinates_Invalid() async {
@@ -211,10 +213,12 @@ final class LocationsViewModelTests: XCTestCase {
         viewModel = await LocationsViewModel(locationService: service)
 
         // Act
-        let isValid = await viewModel.validateCoordinates(latitude: "Invalid", longitude: "4.8339215")
+        let latitudeIsValid = await viewModel.latitudeValidator("abcd")
+        let longitudeIsValid = await viewModel.longitudeValidator("2222222")
 
         // Assert
-        XCTAssertFalse(isValid, "Coordinates should be invalid if latitude or longitude cannot be converted to Double.")
+        XCTAssertFalse(latitudeIsValid, "Latitude should be invalid.")
+        XCTAssertFalse(longitudeIsValid, "Longitude should be invalid.")
     }
     
     func testLocationTapped_ValidURL() async throws {
