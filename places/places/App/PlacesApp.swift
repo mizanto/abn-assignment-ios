@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-public let logger = LoggerProvider.shared
-
 @main
 struct PlacesApp: App {
     let locationService = LocationService()

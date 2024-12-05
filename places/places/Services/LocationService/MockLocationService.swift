@@ -6,7 +6,6 @@
 //
 
 import Foundation
-@testable import Places
 
 final class MockLocationService: LocationServiceProtocol {
     var locations: [NetworkLocation] = []

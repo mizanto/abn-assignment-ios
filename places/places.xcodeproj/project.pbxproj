@@ -7,14 +7,14 @@
 	objects = {
 
 /* Begin PBXContainerItemProxy section */
-		AD5B1C2E2CFE03EF00D33E4C /* PBXContainerItemProxy */ = {
+		AD5B1C382CFE03EF00D33E4C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = AD5B1C152CFE03ED00D33E4C /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = AD5B1C1C2CFE03ED00D33E4C;
 			remoteInfo = Places;
 		};
-		AD5B1C382CFE03EF00D33E4C /* PBXContainerItemProxy */ = {
+		AD6EDB2B2D01CA43002241C5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = AD5B1C152CFE03ED00D33E4C /* Project object */;
 			proxyType = 1;
@@ -40,8 +40,16 @@
 		AD6EDB242D00DB24002241C5 /* Exceptions for "Places" folder in "PlacesTests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Models/Display/DisplayLocation.swift,
+				Models/Network/NetworkLocation.swift,
 				Resources/Localizable.xcstrings,
+				Screens/Locations/LocationsViewModel.swift,
+				Screens/ScreenState.swift,
+				Services/LocationService/LocationService.swift,
+				Services/LocationService/LocationServiceError.swift,
 				Services/LocationService/MockLocationService.swift,
+				Services/Logger.swift,
+				Services/URLOpener.swift,
 			);
 			target = AD5B1C2C2CFE03EE00D33E4C /* PlacesTests */;
 		};
@@ -158,7 +166,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				AD5B1C2F2CFE03EF00D33E4C /* PBXTargetDependency */,
+				AD6EDB2C2D01CA43002241C5 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				AD5B1C302CFE03EF00D33E4C /* PlacesTests */,
@@ -286,15 +294,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		AD5B1C2F2CFE03EF00D33E4C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = AD5B1C1C2CFE03ED00D33E4C /* Places */;
-			targetProxy = AD5B1C2E2CFE03EF00D33E4C /* PBXContainerItemProxy */;
-		};
 		AD5B1C392CFE03EF00D33E4C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = AD5B1C1C2CFE03ED00D33E4C /* Places */;
 			targetProxy = AD5B1C382CFE03EF00D33E4C /* PBXContainerItemProxy */;
+		};
+		AD6EDB2C2D01CA43002241C5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AD5B1C1C2CFE03ED00D33E4C /* Places */;
+			targetProxy = AD6EDB2B2D01CA43002241C5 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

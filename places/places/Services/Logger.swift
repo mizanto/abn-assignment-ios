@@ -8,6 +8,8 @@
 import Foundation
 import OSLog
 
+public let logger = LoggerProvider.shared
+
 public final class LoggerProvider {
     public enum LogCategory: String {
         case locationsViewModel = "LocationsViewModel"
