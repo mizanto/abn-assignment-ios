@@ -11,9 +11,9 @@ struct LocationsView<VM: LocationsViewModelProtocol>: View {
     @StateObject private var viewModel: VM
     
     init(viewModel: VM) {
-            _viewModel = StateObject(wrappedValue: viewModel)
-        }
-
+        _viewModel = StateObject(wrappedValue: viewModel)
+    }
+    
     var body: some View {
         NavigationView {
             Group {
@@ -107,7 +107,3 @@ struct LocationsView<VM: LocationsViewModelProtocol>: View {
         .accessibilityIdentifier("locations_view_custom_location_view")
     }
 }
-
-//#Preview {
-//    LocationsView()
-//}

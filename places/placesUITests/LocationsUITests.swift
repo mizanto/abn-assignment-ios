@@ -93,7 +93,7 @@ final class LocationsUITests: XCTestCase {
         app.launch()
 
         // Act
-        let customLocationButton = app.buttons["LocationsView_customLocationButton"]
+        let customLocationButton = app.buttons["locations_view_custom_location_button"]
         XCTAssertTrue(customLocationButton.exists, "Custom location button must be displayed.")
         
         customLocationButton.tap()
@@ -133,9 +133,4 @@ final class LocationsUITests: XCTestCase {
         // Assert: Check if the submit button is enabled after entering valid input
         XCTAssertTrue(submitButton.isEnabled, "Submit button must be enabled after entering valid input.")
     }
-}
-
-func LocalizedString(_ key: String) -> String {
-    let bundle = Bundle(for: LocationsUITests.self)
-    return NSLocalizedString(key, bundle: bundle, comment: "")
 }
