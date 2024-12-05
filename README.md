@@ -51,15 +51,15 @@ To fulfill the assignment requirements, the Wikipedia app was modified to handle
 
 1. **Viewing Locations**:
 
-   - Launch the Places app to see a list of locations.
-   - Tap on a location to open it in the modified Wikipedia app.
+- Launch the Places app to see a list of locations.
+- Tap on a location to open it in the modified Wikipedia app.
 
 2. **Entering a Custom Location**:
 
-   - Tap the **Custom Location** button.
-   - Enter valid latitude and longitude values.
-   - If inputs are invalid, error messages will appear, and input fields will be highlighted.
-   - Tap **Open Location** to view it in Wikipedia.
+- Tap the **Custom Location** button.
+- Enter valid latitude and longitude values.
+- If inputs are invalid, error messages will appear, and input fields will be highlighted.
+- Tap **Open Location** to view it in Wikipedia.
 
 ## Testing
 
