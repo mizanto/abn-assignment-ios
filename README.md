@@ -72,9 +72,3 @@ To fulfill the assignment requirements, the Wikipedia app was modified to handle
 
 - **LocationsUITests**: Tests for UI components and user interactions.
 - **Custom Location Tests**: Tests for validation logic and error messages in the custom location view.
-
----
-
-Thank you for reviewing this assignment. If you have any questions or need further clarification, please feel free to reach out.
-
----
