@@ -37,6 +37,21 @@
 			);
 			target = AD5B1C1C2CFE03ED00D33E4C /* Places */;
 		};
+		AD6EDB242D00DB24002241C5 /* Exceptions for "Places" folder in "PlacesTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Resources/Localizable.xcstrings,
+				Services/LocationService/MockLocationService.swift,
+			);
+			target = AD5B1C2C2CFE03EE00D33E4C /* PlacesTests */;
+		};
+		AD6EDB282D00DC4F002241C5 /* Exceptions for "Places" folder in "PlacesUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Resources/Localizable.xcstrings,
+			);
+			target = AD5B1C362CFE03EF00D33E4C /* PlacesUITests */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -44,6 +59,8 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				AD5B1C572CFE0C0100D33E4C /* Exceptions for "Places" folder in "Places" target */,
+				AD6EDB242D00DB24002241C5 /* Exceptions for "Places" folder in "PlacesTests" target */,
+				AD6EDB282D00DC4F002241C5 /* Exceptions for "Places" folder in "PlacesUITests" target */,
 			);
 			path = Places;
 			sourceTree = "<group>";

@@ -18,9 +18,11 @@ struct LocationRow: View {
                     Text(location.name)
                         .font(.headline)
                         .foregroundStyle(.primary)
+                        .accessibilityIdentifier("location_row_name_\(location.name)")
                     Text("\(location.latitude)° \(location.longitude)°")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
+                        .accessibilityIdentifier("location_row_coordinates_\(location.name)")
                 }
                 Spacer()
                 Image(systemName: "chevron.right")
@@ -41,6 +43,7 @@ struct LocationRow: View {
             .accessibilityHint(
                 NSLocalizedString("accessibility_hint_location_row", comment: "")
             )
+            .accessibilityIdentifier("location_row_\(location.name)")
         }
     }
 }

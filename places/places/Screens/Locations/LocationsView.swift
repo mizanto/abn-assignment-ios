@@ -62,6 +62,7 @@ struct LocationsView<VM: LocationsViewModelProtocol>: View {
                     actionTitle: NSLocalizedString("retry_button_title", comment: ""),
                     onAction: { viewModel.onReload() }
                 )
+                .accessibilityIdentifier("LocationsView_EmptyPlaceholder")
             } else {
                 List {
                     ForEach(locations) { location in
@@ -76,6 +77,7 @@ struct LocationsView<VM: LocationsViewModelProtocol>: View {
                     .listRowSeparator(.hidden)
                 }
                 .listStyle(PlainListStyle())
+                .accessibilityIdentifier("locations_view_list")
             }
         }
     }
@@ -91,6 +93,7 @@ struct LocationsView<VM: LocationsViewModelProtocol>: View {
         )
         .accessibilityLabel(NSLocalizedString("accessibility_label_custom_location_button", comment: ""))
         .accessibilityHint(NSLocalizedString("accessibility_hint_custom_location_button", comment: ""))
+        .accessibilityIdentifier("LocationsView_customLocationButton")
     }
     
     private func customLocationView() -> some View {
@@ -101,6 +104,7 @@ struct LocationsView<VM: LocationsViewModelProtocol>: View {
         )
         .presentationDetents([.height(240)])
         .presentationDragIndicator(.visible)
+        .accessibilityIdentifier("locations_view_custom_location_view")
     }
 }
 

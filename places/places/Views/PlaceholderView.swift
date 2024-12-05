@@ -55,6 +55,7 @@ struct PlaceholderView: View {
                 .frame(width: 80, height: 80)
                 .foregroundColor(iconColor)
                 .accessibilityLabel(accessibilityLabelForIcon)
+                .accessibilityIdentifier("placeholder_view_icon")
             
             Text(message)
                 .font(.body)
@@ -63,6 +64,7 @@ struct PlaceholderView: View {
                 .padding(.horizontal, 32)
                 .padding(.vertical, 16)
                 .accessibilityHint(NSLocalizedString("accessibility_hint_placeholder_message", comment: ""))
+                .accessibilityIdentifier("placeholder_view_message")
             
             if let actionTitle = actionTitle, let onAction = onAction {
                 Button(action: onAction) {
@@ -77,6 +79,7 @@ struct PlaceholderView: View {
                 }
                 .accessibilityLabel(actionTitle)
                 .accessibilityHint(NSLocalizedString("accessibility_hint_placeholder_action", comment: ""))
+                .accessibilityIdentifier("placeholder_view_action_button")
             }
             
             Spacer()
